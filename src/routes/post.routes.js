@@ -1,32 +1,26 @@
-{
-  "name": "video_sharing_platform_backend",
-  "version": "1.0.0",
-  "description": "",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^3.1.10",
-    "prettier": "^3.6.2"
-  },
-  "dependencies": {
-    "axios": "^1.11.0",
-    "bcrypt": "^6.0.0",
-    "cheerio": "^1.1.2",
-    "cloudinary": "^2.7.0",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.18.0",
-    "mongoose-aggregate-paginate-v2": "^1.1.4",
-    "multer": "^2.0.2",
-    "node-cron": "^4.2.1"
-  }
-}
+import { Router } from "express";
+import {
+  getAllPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+  togglePostLike,
+  getPostsByPlatform,
+  getPostStats,
+} from "../controllers/post.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
+
+const router = Router();
+
+// Public routes
+router.route("/").get(getAllPosts);
+router.route("/stats").get(getPostStats);
+router.route("/platform/:platform").get(getPostsByPlatform);
+router.route("/:postId").get(getPostById);
+
+// Protected routes (require authentication)
+router.use(verifyJWT);
+router.route("/:postId").patch(updatePost).delete(deletePost);
+router.route("/:postId/like").post(togglePostLike);
+
+export default router;
