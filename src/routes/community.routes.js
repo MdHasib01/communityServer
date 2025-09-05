@@ -1,26 +1,32 @@
-import { Router } from "express";
-import {
-  createCommunity,
-  getAllCommunities,
-  getCommunityById,
-  updateCommunity,
-  deleteCommunity,
-  getCommunityPosts,
-  getCommunityStats,
-} from "../controllers/community.controller.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
-
-const router = Router();
-
-// Public routes
-router.route("/").get(getAllCommunities);
-router.route("/:communityId").get(getCommunityById);
-router.route("/:communityId/posts").get(getCommunityPosts);
-router.route("/:communityId/stats").get(getCommunityStats);
-
-// Protected routes (require authentication)
-router.use(verifyJWT);
-router.route("/").post(createCommunity);
-router.route("/:communityId").patch(updateCommunity).delete(deleteCommunity);
-
-export default router;
+{
+  "name": "video_sharing_platform_backend",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "bcrypt": "^6.0.0",
+    "cheerio": "^1.1.2",
+    "cloudinary": "^2.7.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "mongoose-aggregate-paginate-v2": "^1.1.4",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1"
+  }
+}
